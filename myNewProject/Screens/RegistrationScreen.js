@@ -14,7 +14,7 @@ import {
   Text,
 } from "react-native";
 
-const image = "../img/photo-bg.jpg";
+const image = "../img/photo-bg.jpeg";
 
 const Register = () => {
   const [login, setLogin] = useState("");
