@@ -1,30 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Platform, KeyboardAvoidingView } from 'react-native';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { useCallback } from "react";
+import { useFonts } from "expo-font";
 
-export default function App() {
-  const [value, setValue] = useState("");
-  const handleInput = (text) => setValue(text)
+import Login from "./screens/LoginScreen";
+import Register from "./screens/RegistrationScreen";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
+
+const App = () => {
+  const [fontsLoaded] = useFonts({
+    Roboto: require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView behavior = {Platform.OS === "ios" ? "padding" : "height"}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <TextInput
-        placeholder="Text"
-        value={value}
-        onChangeText = {handleInput}
-      />
-        <StatusBar style="auto" />
-        </KeyboardAvoidingView>
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      {/* <Login /> */}
+      <Register />
     </View>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  container: { flex: 1, fontFamily: "Shantell_Sans" },
 });
