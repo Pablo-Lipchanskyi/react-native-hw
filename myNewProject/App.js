@@ -3,8 +3,8 @@ import { View, StyleSheet } from "react-native";
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
 
-import Login from "./screens/LoginScreen";
-import Register from "./screens/RegistrationScreen";
+import Login from "./Screens/LoginScreen";
+import Register from "./Screens/RegistrationScreen";
 import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
