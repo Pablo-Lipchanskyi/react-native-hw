@@ -14,7 +14,7 @@ import {
   Text,
 } from "react-native";
 
-const image = "../img/photo-bg.jpeg";
+const image = "../img/photo-bg.jpg";
 
 const Register = () => {
   const [login, setLogin] = useState("");
@@ -45,7 +45,7 @@ const Register = () => {
 
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
-      <ImageBackground source={require(image)} style={styles.imageBg}>
+      <ImageBackground source={image} style={styles.imageBg}>
         <View style={styles.registerContainer}>
           <View
             style={[
