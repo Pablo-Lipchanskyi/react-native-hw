@@ -35,7 +35,7 @@ const Login = () => {
 
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
-      <ImageBackground source={require(image)} style={styles.imageBg}>
+      <ImageBackground source={image} style={styles.imageBg}>
         <View style={styles.registerContainer}>
           <Text style={styles.registerTitle}>Увійти</Text>
           <View
