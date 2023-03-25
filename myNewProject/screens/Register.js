@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import {
   StyleSheet,
   View,
@@ -8,15 +11,15 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Alert,
   TouchableOpacity,
   Image,
+  Pressable,
   Text,
 } from "react-native";
 
 const image = "../img/photo-bg.jpg";
 
-const Register = () => {
+const Register = ({ navigation }) => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -32,10 +35,11 @@ const Register = () => {
   };
 
   const onRegister = () => {
-    Alert.alert(`User login: ${login}, Password: ${password}, Email: ${email}`);
+    console.log(`User login: ${login}, Password: ${password}, Email: ${email}`);
     setEmail("");
     setPassword("");
     setLogin("");
+    navigation.navigate("Home");
   };
 
   const keyBoardHide = () => {
@@ -45,7 +49,7 @@ const Register = () => {
 
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
-      <ImageBackground source={image} style={styles.imageBg}>
+      <ImageBackground source={require(image)} style={styles.imageBg}>
         <View style={styles.registerContainer}>
           <View
             style={[
@@ -55,30 +59,37 @@ const Register = () => {
               },
             ]}
           >
-            <TouchableOpacity
-              style={[
-                styles.addButton,
-                {
-                  transform: [{ translateY: 75 }, { translateX: 10 }],
-                },
-              ]}
+            {/* <Pressable
+              style={{
+                transform: [{ translateY: 75 }, { translateX: 10 }],
+              }}
             >
-              <Image
-                source={require("../img/icon-plus.png")}
-                style={{ width: 13, height: 13 }}
+              <Ionicons name="add-circle-outline" size={13} color="#FF6C00" />
+            </Pressable> */}
+            <Pressable
+              style={styles.addButton}
+              onPress={() => {
+                console.log("2023");
+              }}
+            >
+              <MaterialIcons
+                name="highlight-remove"
+                size={24}
+                color="#FF6C00"
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 50,
+                  transform: [{ rotate: "45deg" }],
+                }}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <Text style={styles.registerTitle}>Реєстрація</Text>
 
-          <View
-            style={{
-              ...styles.formBox,
-              marginBottom: isKeyboardShow ? 0 : 43,
-            }}
-          >
+          <View style={styles.formBox}>
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
+              keyboardVerticalOffset={300}
             >
               <TextInput
                 value={login}
@@ -94,7 +105,12 @@ const Register = () => {
                 style={styles.input}
                 onFocus={() => setIsKeyboardShow(true)}
               />
-              <View style={styles.showPasscontainer}>
+              <View
+                style={{
+                  ...styles.showPasscontainer,
+                  marginBottom: isKeyboardShow ? 62 : 89,
+                }}
+              >
                 <TextInput
                   value={password}
                   onChangeText={passwordHandler}
@@ -120,7 +136,15 @@ const Register = () => {
           >
             <Text style={styles.buttonRegisterLabel}>Зареєструватися</Text>
           </TouchableOpacity>
-          <Text style={styles.linkLogin}>Вже маєте акаунт? Увійти</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Login")}
+            accessibilityLabel="Зареєструватися"
+            style={{
+              marginBottom: isKeyboardShow ? 16 : 78,
+            }}
+          >
+            <Text style={styles.linkRegister}>Вже маєте акаунт? Увійти</Text>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </TouchableWithoutFeedback>
@@ -129,13 +153,11 @@ const Register = () => {
 
 const styles = StyleSheet.create({
   registerContainer: {
-    alignItems: "center",
-    justifyContent: "flex-end",
+    position: "relative",
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    position: "relative",
-    padding: 16,
-    backgroundColor: "#fff",
   },
   imageBg: {
     flex: 1,
@@ -153,21 +175,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   addButton: {
-    width: 25,
-    height: 25,
-    backgroundColor: "#fff",
-    borderColor: "1px solid orange",
     position: "absolute",
-    top: 0,
-    right: 0,
-    borderRadius: 50,
-    borderColor: "#FF6C00",
-    borderStyle: "solid",
-    borderWidth: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    bottom: 14,
+    right: -12,
   },
+
   registerTitle: {
     fontFamily: "Roboto",
     fontSize: 30,
@@ -204,7 +216,6 @@ const styles = StyleSheet.create({
   showPassLabel: {
     position: "absolute",
     fontFamily: "Roboto",
-
     top: 12,
     right: 16,
     height: 25,
@@ -220,7 +231,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 48,
     borderRadius: 100,
-
     marginBottom: 16,
   },
   buttonRegisterLabel: {
@@ -228,12 +238,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Roboto",
   },
-  linkLogin: {
+  linkRegister: {
     color: "#1B4371",
     fontSize: 16,
     textDecorationLine: "underline",
     textAlign: "center",
-    marginBottom: 78,
   },
 });
 

@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
-  TextInput,
   TouchableWithoutFeedback,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Alert,
-  Text,
+  Keyboard,
   ImageBackground,
+  View,
+  Text,
+  TextInput,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 
 const image = "../img/photo-bg.jpg";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isShowPass, setIsShowPass] = useState(true);
@@ -26,7 +25,10 @@ const Login = () => {
   const showPassToggle = () => setIsShowPass(!isShowPass);
 
   const onLogin = () => {
-    Alert.alert(`User Password: ${password}, Email: ${email}`);
+    console.log(`User Password: ${password}, Email: ${email}`);
+    setEmail("");
+    setPassword("");
+    navigation.navigate("Home");
   };
   const keyBoardHide = () => {
     setIsKeyboardShow(false);
@@ -35,15 +37,10 @@ const Login = () => {
 
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
-      <ImageBackground source={image} style={styles.imageBg}>
-        <View style={styles.registerContainer}>
+      <ImageBackground source={require(image)} style={styles.imageBg}>
+        <View style={styles.loginContainer}>
           <Text style={styles.registerTitle}>Увійти</Text>
-          <View
-            style={{
-              ...styles.formBox,
-              marginBottom: isKeyboardShow ? 0 : 43,
-            }}
-          >
+          <View style={styles.formBox}>
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
             >
@@ -54,7 +51,12 @@ const Login = () => {
                 style={styles.input}
                 onFocus={() => setIsKeyboardShow(true)}
               />
-              <View style={styles.showPasscontainer}>
+              <View
+                style={{
+                  ...styles.showPasscontainer,
+                  marginBottom: isKeyboardShow ? 62 : 89,
+                }}
+              >
                 <TextInput
                   value={password}
                   onChangeText={passwordHandler}
@@ -80,9 +82,17 @@ const Login = () => {
               >
                 <Text style={styles.buttonLoginLabel}>Увійти</Text>
               </TouchableOpacity>
-              <Text style={styles.linkRegister}>
-                Немає акаунту? Зареєструватися
-              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Register")}
+                accessibilityLabel="Зареєструватися"
+                style={{
+                  marginBottom: isKeyboardShow ? 16 : 144,
+                }}
+              >
+                <Text style={styles.linkLogin}>
+                  Немає акаунту? Зареєструватися
+                </Text>
+              </TouchableOpacity>
             </KeyboardAvoidingView>
           </View>
         </View>
@@ -92,12 +102,12 @@ const Login = () => {
 };
 
 const styles = StyleSheet.create({
-  registerContainer: {
+  loginContainer: {
+    position: "relative",
     backgroundColor: "#FFFFFF",
+    paddingHorizontal: 16,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    position: "relative",
-    padding: 16,
   },
   imageBg: {
     flex: 1,
@@ -115,12 +125,10 @@ const styles = StyleSheet.create({
   },
   formBox: {
     width: "100%",
-    marginBottom: 43,
   },
   input: {
     width: "100%",
     fontFamily: "Roboto",
-
     height: 48,
     padding: 16,
     backgroundColor: "#F6F6F6",
@@ -128,14 +136,31 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     border: "1px solid #E8E8E8",
   },
+  showPasscontainer: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    width: "100%",
+    backgroundColor: "#F6F6F6",
+    borderRadius: 8,
+    border: "1px solid #E8E8E8",
+    position: "relative",
+  },
+  showPassLabel: {
+    position: "absolute",
+    fontFamily: "Roboto",
+    top: 12,
+    right: 16,
+    height: 25,
+    fontSize: 16,
+    color: "#1B4371",
+  },
   buttonLogin: {
     width: "100%",
-    marginTop: 43,
     height: 48,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-
     borderRadius: 100,
     backgroundColor: "#FF6C00",
     marginBottom: 16,
@@ -145,35 +170,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Roboto",
   },
-  linkRegister: {
+  linkLogin: {
     color: "#1B4371",
     fontSize: 16,
     textDecorationLine: "underline",
     fontFamily: "Roboto",
-
     textAlign: "center",
-    marginBottom: 144,
-  },
-  showPasscontainer: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    width: "100%",
-    backgroundColor: "#F6F6F6",
-    marginBottom: 62,
-    borderRadius: 8,
-    border: "1px solid #E8E8E8",
-    position: "relative",
-  },
-  showPassLabel: {
-    position: "absolute",
-    fontFamily: "Roboto",
-
-    top: 12,
-    right: 16,
-    height: 25,
-    fontSize: 16,
-    color: "#1B4371",
   },
 });
 
