@@ -9,6 +9,7 @@ import { useRoute } from "./router";
 const App = () => {
   // const [fontsLoaded] = useFonts({
   //   "Roboto": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
+  //   "ShantellSans-SemiBold": require("./assets/fonts/Shantell_Sans/ShantellSans-SemiBoldItalic.ttf"),
   // });
 
   // const onLayoutRootView = useCallback(async () => {

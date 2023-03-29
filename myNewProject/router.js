@@ -3,9 +3,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const AuthStack = createStackNavigator();
 
-import HomeTabs from "./screens/Home";
-import Login from "./screens/Login";
-import Register from "./screens/Register";
+import HomeTabs from "./screens/authScreens/Home";
+import Login from "./screens/authScreens/Login";
+import Register from "./screens/authScreens/Register";
 
 export const useRoute = (isAuth) => {
   if (!isAuth) {
