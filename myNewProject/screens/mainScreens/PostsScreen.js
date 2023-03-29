@@ -1,66 +1,68 @@
 import React from "react";
-import { StyleSheet, View, Image, Text, FlatList } from "react-native";
-import PostItemSimple from "../../components/PostItemSimple/PostItemSimple";
-import { userPosts } from "../../components/userPosts";
+import { TouchableOpacity } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-const image = "../img//user-foto.jpg";
+import { createStackNavigator } from "@react-navigation/stack";
+import DefaultScreen from "../nestedPostScreens/DefaultScreen";
+import CommentsScreen from "../nestedPostScreens/CommentsScreen";
+import MapScreen from "../nestedPostScreens/MapScreen";
 
-const PostsScreen = () => {
+const NestedPostsScreen = createStackNavigator();
+
+const PostsScreen = ({ navigation }) => {
   return (
-    <View style={styles.postsContainer}>
-      <View style={styles.userContainer}>
-        <Image source={require(image)} style={styles.userImage} />
-        <View style={styles.userInfo}>
-          <Text style={styles.userName}>Natali Romanova</Text>
-          <Text style={styles.userEmail}>email@example.com</Text>
-        </View>
-      </View>
-      <FlatList
-        data={userPosts}
-        renderItem={({ item }) => <PostItemSimple data={item} />}
-        keyExtractor={(item) => item.id}
+    <NestedPostsScreen.Navigator initialRouteName="DefaultPostScreen">
+      <NestedPostsScreen.Screen
+        options={{ headerShown: false }}
+        name="DefaultPostScreen"
+        component={DefaultScreen}
       />
-    </View>
+      <NestedPostsScreen.Screen
+        options={{
+          title: "Коментарі",
+          headerTitleStyle,
+          headerTitleAlign: "center",
+
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("DefaultPostScreen")}
+              title="Назад"
+              color="#fff"
+              style={{ marginLeft: 16 }}
+            >
+              <Ionicons name="arrow-back-outline" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          ),
+        }}
+        name="Comments"
+        component={CommentsScreen}
+      />
+      <NestedPostsScreen.Screen
+        options={{
+          title: "Карта",
+          headerTitleStyle,
+          headerTitleAlign: "center",
+
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("DefaultPostScreen")}
+              title="Назад"
+              color="#fff"
+              style={{ marginLeft: 16 }}
+            >
+              <Ionicons name="arrow-back-outline" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          ),
+        }}
+        name="Map"
+        component={MapScreen}
+      />
+    </NestedPostsScreen.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  postsContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: "#fff",
-  },
-  userContainer: {
-    paddingVertical: 16,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    flexDirection: "row",
-  },
-  userImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 16,
-    marginRight: 8,
-  },
-  userInfo: {
-    display: "flex",
-
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  userName: {
-    textAlign: "left",
-    fontFamily: "Roboto",
-    fontWeight: "700",
-    fontSize: 13,
-  },
-  userEmail: {
-    textAlign: "left",
-    fontFamily: "Roboto",
-    fontWeight: "400",
-    fontSize: 11,
-  },
-});
+const headerTitleStyle = {
+  fontWeight: "500",
+  fontSize: 17,
+};
 
 export default PostsScreen;
