@@ -1,35 +1,47 @@
 import React, { useState } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import {
+  StyleSheet,
+  View,
+  TextInput,
   TouchableWithoutFeedback,
+  ImageBackground,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
-  ImageBackground,
-  View,
-  Text,
-  TextInput,
   TouchableOpacity,
-  StyleSheet,
+  Image,
+  Pressable,
+  Text,
 } from "react-native";
 
-const image = "../img/photo-bg.jpg";
+const image = "../../img/photo-bg.jpg";
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
   const [isShowPass, setIsShowPass] = useState(true);
   const [isKeyboardShow, setIsKeyboardShow] = useState(false);
 
+  const loginHandler = (text) => setLogin(text);
   const passwordHandler = (text) => setPassword(text);
   const emailHandler = (text) => setEmail(text);
-  const showPassToggle = () => setIsShowPass(!isShowPass);
+  const showPassToggle = () => {
+    setIsShowPass(!isShowPass);
+  };
 
-  const onLogin = () => {
-    console.log(`User Password: ${password}, Email: ${email}`);
+  const onRegister = () => {
+    console.log(`User login: ${login}, Password: ${password}, Email: ${email}`);
     setEmail("");
     setPassword("");
+    setLogin("");
     navigation.navigate("Home");
   };
+
   const keyBoardHide = () => {
     setIsKeyboardShow(false);
     Keyboard.dismiss();
@@ -38,12 +50,54 @@ const Login = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
       <ImageBackground source={require(image)} style={styles.imageBg}>
-        <View style={styles.loginContainer}>
-          <Text style={styles.registerTitle}>Увійти</Text>
+        <View style={styles.registerContainer}>
+          <View
+            style={[
+              styles.avatar,
+              {
+                transform: [{ translateY: -50 }, { translateX: 50 }],
+              },
+            ]}
+          >
+            {/* <Pressable
+              style={{
+                transform: [{ translateY: 75 }, { translateX: 10 }],
+              }}
+            >
+              <Ionicons name="add-circle-outline" size={13} color="#FF6C00" />
+            </Pressable> */}
+            <Pressable
+              style={styles.addButton}
+              onPress={() => {
+                console.log("2023");
+              }}
+            >
+              <MaterialIcons
+                name="highlight-remove"
+                size={24}
+                color="#FF6C00"
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 50,
+                  transform: [{ rotate: "45deg" }],
+                }}
+              />
+            </Pressable>
+          </View>
+          <Text style={styles.registerTitle}>Реєстрація</Text>
+
           <View style={styles.formBox}>
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
+              keyboardVerticalOffset={300}
             >
+              <TextInput
+                value={login}
+                onChangeText={loginHandler}
+                placeholder="Логін"
+                style={styles.input}
+                onFocus={() => setIsKeyboardShow(true)}
+              />
               <TextInput
                 value={email}
                 onChangeText={emailHandler}
@@ -66,7 +120,6 @@ const Login = ({ navigation }) => {
                   onFocus={() => setIsKeyboardShow(true)}
                 />
                 <TouchableOpacity
-                  title={"Показати"}
                   onPress={showPassToggle}
                   accessibilityLabel="Показати пароль"
                   style={styles.showPass}
@@ -74,27 +127,24 @@ const Login = ({ navigation }) => {
                   <Text style={[styles.showPassLabel]}>Показати</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                title={"Увійти"}
-                onPress={onLogin}
-                accessibilityLabel="Увійти"
-                style={styles.buttonLogin}
-              >
-                <Text style={styles.buttonLoginLabel}>Увійти</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Register")}
-                accessibilityLabel="Зареєструватися"
-                style={{
-                  marginBottom: isKeyboardShow ? 16 : 144,
-                }}
-              >
-                <Text style={styles.linkLogin}>
-                  Немає акаунту? Зареєструватися
-                </Text>
-              </TouchableOpacity>
             </KeyboardAvoidingView>
           </View>
+          <TouchableOpacity
+            onPress={onRegister}
+            accessibilityLabel="Зареєструватися"
+            style={styles.buttonRegister}
+          >
+            <Text style={styles.buttonRegisterLabel}>Зареєструватися</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Login")}
+            accessibilityLabel="Зареєструватися"
+            style={{
+              marginBottom: isKeyboardShow ? 16 : 78,
+            }}
+          >
+            <Text style={styles.linkRegister}>Вже маєте акаунт? Увійти</Text>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </TouchableWithoutFeedback>
@@ -102,9 +152,9 @@ const Login = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  loginContainer: {
+  registerContainer: {
     position: "relative",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#fff",
     paddingHorizontal: 16,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -115,10 +165,25 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
 
+  avatar: {
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    position: "absolute",
+    top: 0,
+    right: "50%",
+    borderRadius: 16,
+  },
+  addButton: {
+    position: "absolute",
+    bottom: 14,
+    right: -12,
+  },
+
   registerTitle: {
     fontFamily: "Roboto",
     fontSize: 30,
-    marginTop: 32,
+    marginTop: 92,
     marginBottom: 32,
     fontWeight: "500",
     textAlign: "center",
@@ -142,10 +207,12 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     width: "100%",
     backgroundColor: "#F6F6F6",
+    marginBottom: 62,
     borderRadius: 8,
     border: "1px solid #E8E8E8",
     position: "relative",
   },
+
   showPassLabel: {
     position: "absolute",
     fontFamily: "Roboto",
@@ -155,28 +222,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#1B4371",
   },
-  buttonLogin: {
-    width: "100%",
-    height: 48,
+
+  buttonRegister: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 100,
     backgroundColor: "#FF6C00",
+    width: "100%",
+    height: 48,
+    borderRadius: 100,
     marginBottom: 16,
   },
-  buttonLoginLabel: {
+  buttonRegisterLabel: {
     color: "white",
     textAlign: "center",
     fontFamily: "Roboto",
   },
-  linkLogin: {
+  linkRegister: {
     color: "#1B4371",
     fontSize: 16,
     textDecorationLine: "underline",
-    fontFamily: "Roboto",
     textAlign: "center",
   },
 });
 
-export default Login;
+export default Register;

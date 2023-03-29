@@ -15,10 +15,18 @@ import {
   postItem,
 } from "./PostItemSimple.styles";
 
-const PostItemSimple = ({ data }) => {
+const PostItemSimple = ({ data, navigation }) => {
   const { title, image, location, comments } = data;
-  const { country, region } = location;
-  const locationInfo = `${region}, ${country}`;
+  const locationInfo = `${location?.region || "невідомо"}, ${
+    location?.country || "невідомо"
+  }`;
+  console.log(data);
+  const commentsHandler = () => {
+    navigation.navigate("Comments", { data });
+  };
+  const locationHandler = () => {
+    navigation.navigate("Map", { location });
+  };
 
   return (
     <View style={postItem}>
@@ -26,17 +34,15 @@ const PostItemSimple = ({ data }) => {
       <Text style={postLabel}>{title}</Text>
       <View style={metaWrapper}>
         <View style={commentsInner}>
-          <View style={commentsWrapper}>
-            <Pressable>
-              <FontAwesome name="comment-o" size={18} color="#BDBDBD" />
-            </Pressable>
+          <Pressable onPress={commentsHandler} style={commentsWrapper}>
+            <FontAwesome name="comment-o" size={18} color="#BDBDBD" />
             <Text style={commentsLabel}>{comments}</Text>
-          </View>
+          </Pressable>
         </View>
-        <View style={locationWrapper}>
+        <Pressable onPress={locationHandler} style={locationWrapper}>
           <Ionicons name="location-outline" size={18} color="#BDBDBD" />
           <Text style={locationLabel}>{locationInfo}</Text>
-        </View>
+        </Pressable>
       </View>
     </View>
   );

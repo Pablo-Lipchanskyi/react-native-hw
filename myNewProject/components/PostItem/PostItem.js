@@ -15,9 +15,8 @@ import {
   socialLabel,
 } from "./PostItem.styles";
 
-const PostItem = ({ data }) => {
+const PostItem = ({ data, navigation }) => {
   const { title, image, location, comments, likes } = data;
-  console.log(data);
 
   return (
     <View style={postItem}>
@@ -26,7 +25,7 @@ const PostItem = ({ data }) => {
       <View style={metaWrapper}>
         <View style={socialWrapper}>
           <View style={commentsWrapper}>
-            <Pressable>
+            <Pressable onPress={() => navigation.navigate("CommentsScreen")}>
               <FontAwesome name="comment" size={18} color="#FF6C00" />
             </Pressable>
             <Text style={socialLabel}>{comments}</Text>
@@ -45,7 +44,7 @@ const PostItem = ({ data }) => {
           }}
         >
           <Ionicons name="location-outline" size={18} color="#BDBDBD" />
-          <Text style={locationLabel}>{location.country}</Text>
+          <Text style={locationLabel}>{location?.country || "невідомо"}</Text>
         </View>
       </View>
     </View>

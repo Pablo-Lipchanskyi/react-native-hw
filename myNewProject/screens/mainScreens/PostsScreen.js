@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Image, Text, FlatList } from "react-native";
-import PostItemSimple from "../components/PostItemSimple/PostItemSimple";
-import { userPosts } from "../components/userPosts";
+import PostItemSimple from "../../components/PostItemSimple/PostItemSimple";
+import { userPosts } from "../../components/userPosts";
 
 const image = "../img//user-foto.jpg";
 
